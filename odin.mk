@@ -19,6 +19,8 @@ DEVICE_PACKAGE_OVERLAYS += device/sony/odin/overlay
 
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
+    frameworks/native/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \
     frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml
 
 # This device is xhdpi.  However the platform doesn't
@@ -28,39 +30,39 @@ PRODUCT_COPY_FILES += \
 PRODUCT_AAPT_CONFIG := normal hdpi xhdpi xxhdpi
 PRODUCT_AAPT_PREF_CONFIG := xxhdpi
 
-# Configuration scripts
+# HW Settings
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/config/sensors.conf:system/etc/sensors.conf \
     $(LOCAL_PATH)/prebuilt/hw_config.sh:system/etc/hw_config.sh \
     $(LOCAL_PATH)/prebuilt/pre_hw_config.sh:system/etc/pre_hw_config.sh
 
+# Sensors
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/system/etc/sensors.conf:system/etc/sensors.conf
+
 # Device specific init
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/config/init.device.rc:root/init.device.rc
+    $(LOCAL_PATH)/rootdir/init.device.rc:root/init.device.rc
 
 # USB function switching
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/config/init.sony.usb.rc:root/init.sony.usb.rc
+    $(LOCAL_PATH)/rootdir/init.sony.usb.rc:root/init.sony.usb.rc
 
+# Vold
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/config/vold.fstab:system/etc/vold.fstab \
-    $(LOCAL_PATH)/config/media_profiles.xml:system/etc/media_profiles.xml
+    $(LOCAL_PATH)/rootdir/system/etc/vold.fstab:system/etc/vold.fstab
+
+# Audio
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/system/etc/audio_policy.conf:system/etc/audio_policy.conf \
+    $(LOCAL_PATH)/rootdir/system/etc/snd_soc_msm/snd_soc_msm_2x_Fusion3:system/etc/snd_soc_msm/snd_soc_msm_2x_Fusion3
 
 # Device specific part for two-stage boot
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/bootrec-device:recovery/bootrec-device
 
-# Key layouts and touchscreen
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/config/clearpad.idc:system/usr/idc/clearpad.idc \
-    $(LOCAL_PATH)/config/Button_Jack.kl:system/usr/keylayout/Button_Jack.kl \
-    $(LOCAL_PATH)/config/atmel_mxt_ts.kl:system/usr/keylayout/atmel_mxt_ts.kl \
-    $(LOCAL_PATH)/config/clearpad.kl:system/usr/keylayout/clearpad.kl \
-    $(LOCAL_PATH)/config/cyttsp-i2c.kl:system/usr/keylayout/cyttsp-i2c.kl \
-    $(LOCAL_PATH)/config/gpio-keys.kl:system/usr/keylayout/gpio-keys.kl \
-    $(LOCAL_PATH)/config/keypad_8960.kl:system/usr/keylayout/keypad_8960.kl \
-    $(LOCAL_PATH)/config/keypad_8960_liquid.kl:system/usr/keylayout/keypad_8960_liquid.kl
+PRODUCT_PACKAGES += \
+    XperiaSettings
 
-$(call inherit-product, frameworks/native/build/phone-xhdpi-2048-dalvik-heap.mk)
+$(call inherit-product, frameworks/native/build/phone-xxhdpi-2048-dalvik-heap.mk)
 
 $(call inherit-product-if-exists, vendor/sony/odin/odin-vendor.mk)
